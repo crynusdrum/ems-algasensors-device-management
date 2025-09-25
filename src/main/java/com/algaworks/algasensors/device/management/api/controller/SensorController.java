@@ -19,6 +19,13 @@ public class SensorController {
 
     private final SensorRepository sensorRepository;
 
+    @GetMapping("{sensorId}")
+    public SensorOutput getOne(@PathVariable TSID sensorId) {
+        Sensor sensor = sensorRepository.findById(new SensorId(sensorId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return convertToModel(sensor);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SensorOutput create(@RequestBody SensorInput input) {
